@@ -1,13 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import AlumniRegistrationForm
 
+# View to handle alumni registration
 def register(request):
-    return render(request, 'Alumni_App/register.html')
+    if request.method == 'POST':
+        form = AlumniRegistrationForm(request.POST)
+        if form.is_valid():
+            # Save the form data to the database
+            form.save()
+            return redirect('success')  # Redirect to a success page after saving
+    else:
+        form = AlumniRegistrationForm()
 
-def jobs(request):
-    return render(request, 'Alumni_App/jobs.html')
+    return render(request, 'Alumni_App/register.html', {'form': form})
 
-def events(request):
-    return render(request, 'Alumni_App/events.html')
-
-def networking(request):
-    return render(request, 'Alumni_App/networking.html')
+# View for success page
+def success(request):
+    return render(request, 'Alumni_App/success.html')

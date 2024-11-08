@@ -1,19 +1,265 @@
-{% extends "Alumni_App/base.html" %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-{% block content %}
-<h1>Register</h1>
-<form action="{% url 'register' %}" method="post">
-  {% csrf_token %}
-  <label for="name">Name:</label>
-  <input type="text" id="name" name="name" required>
-  
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required>
-  
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('https://images.pexels.com/photos/8093045/pexels-photo-8093045.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            padding: 0;
+            margin: 0;
+        }
 
-  <button type="submit">Register</button>
-</form>
-{% endblock %}
+        /* Adding an overlay to enhance text visibility */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: -1;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .hero h1 {
+            color: #366798; /* Gold */
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            color: #BDC3C7;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .hero button {
+            padding: 15px 40px;
+            background-color:  #366798; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .hero button:hover {
+            background-color: #366798;
+        }
+
+        /* Form Section */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #2C3E50; /* Darker blue-gray */
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #BDC3C7; /* Light gray border */
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #34495E; /* Dark gray text */
+            background-color: #ECF0F1; /* Light gray background */
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #16A085; /* Teal color for focus */
+            outline: none;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #16A085; /* Teal */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1ABC9C; /* Lighter teal on hover */
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #BDC3C7;
+        }
+
+        .footer a {
+            color: #2C3E50;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-list {
+            background-color: #F2D7D5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #C0392B;
+        }
+
+        .error-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .error-list li {
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Welcome to the Alumni Registration</h1>
+        <p>Join our global alumni network to stay connected, share experiences, and advance together.</p>
+        <button>Join Now</button>
+    </div>
+
+    <!-- Registration Form Section -->
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <i class="fas fa-user"></i>
+                {{ form.first_name }}  
+            </div>
+
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <i class="fas fa-user"></i>
+                {{ form.last_name }}  
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <i class="fas fa-envelope"></i>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label for="phone_number">Phone Number</label>
+                <i class="fas fa-phone-alt"></i>
+                {{ form.phone_number }}
+            </div>
+
+            <div class="form-group">
+                <label for="graduation_year">Graduation Year</label>
+                <i class="fas fa-calendar-alt"></i>
+                {{ form.graduation_year }}
+            </div>
+
+            <div class="form-group">
+                <label for="degree">Degree</label>
+                <i class="fas fa-graduation-cap"></i>
+                {{ form.degree }}
+            </div>
+
+            <div class="form-group">
+                <label for="company_name">Company Name</label>
+                <i class="fas fa-building"></i>
+                {{ form.company_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="position">Current Position</label>
+                <i class="fas fa-briefcase"></i>
+                {{ form.position }}
+            </div>
+
+            <!-- New fields -->
+            <div class="form-group">
+                <label for="skills">Skills & Expertise</label>
+                <i class="fas fa-tools"></i>
+                <textarea name="skills" id="skills" rows="4" placeholder="List your key skills and expertise"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="interests">Areas of Interest</label>
+                <i class="fas fa-heart"></i>
+                <textarea name="interests" id="interests" rows="4" placeholder="What are you passionate about?"></textarea>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+
+        {% if form.errors %}
+            <div class="error-list">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>Thank you for being a part of our alumni network!</p>
+        <p>For more information, visit our <a href="#">Alumni Portal</a>.</p>
+    </div>
+
+</body>
+</html>
